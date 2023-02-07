@@ -8,6 +8,10 @@ import (
 	"time"
 )
 
+const (
+	UsersCollection = "users"
+)
+
 type Config struct {
 	Host   string
 	Port   string

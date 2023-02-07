@@ -1,13 +1,21 @@
 package repository
 
-import "go.mongodb.org/mongo-driver/mongo"
+import (
+	"github.com/HeadGardener/link-shortener/internal/app/models"
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
+type Authorization interface {
+	CreateUser(user models.User) (interface{}, error)
+	GetUser(userInput models.UserInput) (string, error)
+}
 
 type Repository struct {
-	db *mongo.Database
+	Authorization
 }
 
 func NewRepository(db *mongo.Database) *Repository {
 	return &Repository{
-		db: db,
+		Authorization: NewAuthMongo(db),
 	}
 }
