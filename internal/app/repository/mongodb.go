@@ -10,6 +10,7 @@ import (
 
 const (
 	UsersCollection = "users"
+	LinksCollection = "links"
 )
 
 type Config struct {
@@ -23,6 +24,7 @@ func NewMongoDB(config Config) (*mongo.Database, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	err = client.Connect(ctx)
 	if err != nil {

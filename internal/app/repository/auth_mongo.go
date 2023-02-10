@@ -16,15 +16,15 @@ func NewAuthMongo(db *mongo.Database) *AuthMongo {
 	return &AuthMongo{db: db}
 }
 
-func (r *AuthMongo) CreateUser(user models.User) (interface{}, error) {
+func (r *AuthMongo) CreateUser(user models.User) error {
 	coll := r.db.Collection(UsersCollection)
 
-	res, err := coll.InsertOne(context.TODO(), user)
+	_, err := coll.InsertOne(context.TODO(), user)
 	if err != nil {
-		return 0, err
+		return err
 	}
 
-	return res.InsertedID, nil
+	return nil
 }
 
 func (r *AuthMongo) GetUser(userInput models.UserInput) (string, error) {

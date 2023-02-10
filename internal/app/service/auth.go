@@ -5,6 +5,7 @@ import (
 	"github.com/HeadGardener/link-shortener/internal/app/models"
 	"github.com/HeadGardener/link-shortener/internal/app/repository"
 	"github.com/golang-jwt/jwt"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"time"
 )
@@ -27,14 +28,16 @@ type tokenClaims struct {
 	UserID string `json:"user_id"`
 }
 
-func (s *AuthService) CreateUser(user models.User) (interface{}, error) {
+func (s *AuthService) CreateUser(user models.User) (string, error) {
 	var err error
 	user.Password, err = generatePasswordHash(user.Password)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 
-	return s.repos.CreateUser(user)
+	user.ID = uuid.New().String()
+
+	return user.ID, s.repos.CreateUser(user)
 }
 
 func generatePasswordHash(password string) (string, error) {

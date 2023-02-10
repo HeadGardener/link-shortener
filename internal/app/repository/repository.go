@@ -6,16 +6,21 @@ import (
 )
 
 type Authorization interface {
-	CreateUser(user models.User) (interface{}, error)
+	CreateUser(user models.User) error
 	GetUser(userInput models.UserInput) (string, error)
 }
 
+type Shortener interface {
+	CreateLink(link models.Link) error
+}
 type Repository struct {
 	Authorization
+	Shortener
 }
 
 func NewRepository(db *mongo.Database) *Repository {
 	return &Repository{
 		Authorization: NewAuthMongo(db),
+		Shortener:     NewShortenerMongo(db),
 	}
 }
