@@ -13,6 +13,7 @@ type Authorization interface {
 
 type Shortener interface {
 	CreateLink(link models.InputLink, userID string) (models.Link, error)
+	Redirect(identifier string) (string, error)
 }
 
 type Service struct {

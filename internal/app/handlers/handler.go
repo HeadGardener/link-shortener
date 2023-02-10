@@ -29,6 +29,7 @@ func (h *Handler) InitRoutes() *echo.Echo {
 			link.POST("/", h.shortenLink)
 		}
 	}
+	router.GET("/:id", h.redirect)
 
 	return router
 }

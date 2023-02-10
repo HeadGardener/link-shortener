@@ -23,17 +23,26 @@ func (s *ShortenerService) CreateLink(inputLink models.InputLink, userID string)
 	if inputLink.CustomURL == "" {
 		shortURL = shortener.GetShortURL(linkID)
 	} else {
-		shortURL = shortener.BaseURL + inputLink.CustomURL
+		shortURL = inputLink.CustomURL
 	}
 
 	link := models.Link{
-		URL:       inputLink.URL,
-		ShortURL:  shortURL,
-		CustomURL: inputLink.CustomURL,
-		ID:        linkID,
-		UserID:    userID,
-		CreatedAt: time.Now(),
+		URL:        inputLink.URL,
+		ShortURL:   shortener.BaseURL + shortURL,
+		Identifier: shortURL,
+		ID:         linkID,
+		UserID:     userID,
+		CreatedAt:  time.Now(),
 	}
 
 	return link, s.repos.Shortener.CreateLink(link)
+}
+
+func (s *ShortenerService) Redirect(identifier string) (string, error) {
+	link, err := s.repos.Shortener.GetLink(identifier)
+	if err != nil {
+		return "", err
+	}
+
+	return link.URL, nil
 }

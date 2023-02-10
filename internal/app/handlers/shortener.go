@@ -23,7 +23,25 @@ func (h *Handler) shortenLink(c echo.Context) error {
 	link, err := h.service.Shortener.CreateLink(inputLink, userID)
 	if err != nil {
 		newErrResponse(c, http.StatusInternalServerError, err.Error())
+		return err
 	}
 
 	return c.JSON(http.StatusOK, link)
+}
+
+func (h *Handler) redirect(c echo.Context) error {
+	identifier := c.Param("id")
+
+	if identifier == "" {
+		newErrResponse(c, http.StatusBadRequest, "empty link identifier")
+		return errors.New("empty link identifier")
+	}
+
+	url, err := h.service.Shortener.Redirect(identifier)
+	if err != nil {
+		newErrResponse(c, http.StatusInternalServerError, err.Error())
+		return err
+	}
+
+	return c.Redirect(http.StatusPermanentRedirect, url)
 }

@@ -12,6 +12,7 @@ type Authorization interface {
 
 type Shortener interface {
 	CreateLink(link models.Link) error
+	GetLink(identifier string) (models.Link, error)
 }
 type Repository struct {
 	Authorization

@@ -3,7 +3,9 @@ package repository
 import (
 	"context"
 	"github.com/HeadGardener/link-shortener/internal/app/models"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type ShortenerMongo struct {
@@ -23,4 +25,16 @@ func (r *ShortenerMongo) CreateLink(link models.Link) error {
 	}
 
 	return nil
+}
+
+func (r *ShortenerMongo) GetLink(identifier string) (models.Link, error) {
+	coll := r.db.Collection(LinksCollection)
+
+	filter := bson.D{{"identifier", identifier}}
+	opts := options.FindOne()
+
+	var link models.Link
+	err := coll.FindOne(context.TODO(), filter, opts).Decode(&link)
+
+	return link, err
 }

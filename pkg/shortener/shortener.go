@@ -26,7 +26,7 @@ func GetShortURL(linkID uint32) string {
 		chars = append(chars, string(alphabet[num]))
 	}
 
-	return fmt.Sprintf("%s%s", BaseURL, strings.Join(chars, ""))
+	return fmt.Sprintf("%s", strings.Join(chars, ""))
 }
 
 func Reverse(nums []uint32) []uint32 {
