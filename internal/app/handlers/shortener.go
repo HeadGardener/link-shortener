@@ -20,11 +20,10 @@ func (h *Handler) shortenLink(c echo.Context) error {
 		return errors.New("conversion mistake")
 	}
 
-	err := h.service.Shortener.CreateLink(inputLink, userID)
+	link, err := h.service.Shortener.CreateLink(inputLink, userID)
 	if err != nil {
 		newErrResponse(c, http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"mw": "alive",
-	})
+
+	return c.JSON(http.StatusOK, link)
 }

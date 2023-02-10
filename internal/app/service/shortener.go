@@ -16,7 +16,7 @@ func NewShortenerService(repos *repository.Repository) *ShortenerService {
 	return &ShortenerService{repos: repos}
 }
 
-func (s *ShortenerService) CreateLink(inputLink models.InputLink, userID string) error {
+func (s *ShortenerService) CreateLink(inputLink models.InputLink, userID string) (models.Link, error) {
 	linkID := uuid.New().ID()
 	var shortURL string
 
@@ -35,5 +35,5 @@ func (s *ShortenerService) CreateLink(inputLink models.InputLink, userID string)
 		CreatedAt: time.Now(),
 	}
 
-	return s.repos.Shortener.CreateLink(link)
+	return link, s.repos.Shortener.CreateLink(link)
 }
