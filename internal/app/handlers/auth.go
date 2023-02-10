@@ -10,14 +10,12 @@ func (h *Handler) signUp(c echo.Context) error {
 	var user models.User
 
 	if err := c.Bind(&user); err != nil {
-		newErrResponse(c, http.StatusBadRequest, "invalid data for sign up user")
-		return err
+		return newErrResponse(c, http.StatusBadRequest, "invalid data for sign up user")
 	}
 
 	id, err := h.service.Authorization.CreateUser(user)
 	if err != nil {
-		newErrResponse(c, http.StatusInternalServerError, err.Error())
-		return err
+		return newErrResponse(c, http.StatusInternalServerError, err.Error())
 	}
 
 	return c.JSON(http.StatusCreated, map[string]interface{}{
@@ -29,14 +27,12 @@ func (h *Handler) signIn(c echo.Context) error {
 	var userInput models.UserInput
 
 	if err := c.Bind(&userInput); err != nil {
-		newErrResponse(c, http.StatusBadRequest, "invalid data for sign in user")
-		return err
+		return newErrResponse(c, http.StatusBadRequest, "invalid data for sign in user")
 	}
 
 	token, err := h.service.Authorization.GenerateToken(userInput)
 	if err != nil {
-		newErrResponse(c, http.StatusInternalServerError, "mistake in authorization")
-		return err
+		return newErrResponse(c, http.StatusInternalServerError, "mistake in authorization")
 	}
 
 	return c.JSON(http.StatusCreated, map[string]interface{}{

@@ -46,3 +46,7 @@ func (s *ShortenerService) Redirect(identifier string) (string, error) {
 
 	return link.URL, nil
 }
+
+func (s *ShortenerService) GetAll(userID string) ([]models.Link, error) {
+	return s.repos.Shortener.GetAllLinks(userID)
+}

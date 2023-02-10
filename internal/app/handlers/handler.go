@@ -27,6 +27,7 @@ func (h *Handler) InitRoutes() *echo.Echo {
 		link := shortener.Group("/link")
 		{
 			link.POST("/", h.shortenLink)
+			link.GET("/all", h.getAllLinks)
 		}
 	}
 	router.GET("/:id", h.redirect)

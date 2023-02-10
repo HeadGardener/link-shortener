@@ -38,3 +38,23 @@ func (r *ShortenerMongo) GetLink(identifier string) (models.Link, error) {
 
 	return link, err
 }
+
+func (r *ShortenerMongo) GetAllLinks(userID string) ([]models.Link, error) {
+	coll := r.db.Collection(LinksCollection)
+
+	filter := bson.D{{"user_id", userID}}
+	opts := options.Find()
+
+	var links []models.Link
+	cur, err := coll.Find(context.TODO(), filter, opts)
+	if err != nil {
+		return nil, err
+	}
+
+	err = cur.All(context.TODO(), &links)
+	if err != nil {
+		return nil, err
+	}
+
+	return links, err
+}
