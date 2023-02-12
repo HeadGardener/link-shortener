@@ -51,5 +51,13 @@ func (h *Handler) getAllLinks(c echo.Context) error {
 		return newErrResponse(c, http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, links)
+	var output []models.OutputLink
+	for _, link := range links {
+		output = append(output, models.OutputLink{
+			URL:      link.URL,
+			ShortURL: link.ShortURL,
+		})
+	}
+
+	return c.JSON(http.StatusOK, output)
 }

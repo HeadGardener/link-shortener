@@ -15,3 +15,8 @@ type InputLink struct {
 	URL       string `json:"url" bson:"url"`
 	CustomURL string `json:"custom_url" bson:"custom_url"`
 }
+
+type OutputLink struct {
+	URL      string `json:"url"`
+	ShortURL string `json:"short_url"`
+}
